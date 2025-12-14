@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
-    <net id="manufacturing_process" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <net id="manufacturing_process_multi_assembly" type="http://www.pnml.org/version-2009/grammar/ptnet">
         <page id="main_page">
             <name>
-                <text>Manufacturing Process Control System</text>
+                <text>Manufacturing Process with Optional Multi-Assembly</text>
             </name>
 
             <!-- ==================== -->
@@ -21,7 +21,7 @@
                     <text>10</text>
                 </initialMarking>
                 <graphics>
-                    <position x="100" y="100"/>
+                    <position x="-710.66" y="102.02"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
@@ -37,7 +37,7 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="250" y="100"/>
+                    <position x="-364.12" y="107.56"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
@@ -53,7 +53,7 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="400" y="100"/>
+                    <position x="-1.09" y="125.60"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
@@ -69,7 +69,7 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="550" y="100"/>
+                    <position x="370.85" y="168.47"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
@@ -85,28 +85,12 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="700" y="100"/>
+                    <position x="579.43" y="384.24"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
 
             <place id="P5">
-                <name>
-                    <text>Assembly</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="850" y="100"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
-            </place>
-
-            <place id="P6">
                 <name>
                     <text>Assembled</text>
                     <graphics>
@@ -117,12 +101,12 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="1000" y="100"/>
+                    <position x="757.73" y="206.99"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
 
-            <place id="P7">
+            <place id="P6">
                 <name>
                     <text>Quality Check</text>
                     <graphics>
@@ -133,12 +117,12 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="1150" y="100"/>
+                    <position x="1131.80" y="119.66"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
 
-            <place id="P8">
+            <place id="P7">
                 <name>
                     <text>Passed QC</text>
                     <graphics>
@@ -149,14 +133,14 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="1300" y="100"/>
+                    <position x="1501.37" y="84.55"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
 
-            <place id="P9">
+            <place id="P8">
                 <name>
-                    <text>Packaging</text>
+                    <text>Ready to Package</text>
                     <graphics>
                         <offset x="0" y="-30"/>
                     </graphics>
@@ -165,7 +149,23 @@
                     <text>0</text>
                 </initialMarking>
                 <graphics>
-                    <position x="1450" y="100"/>
+                    <position x="1863.89" y="85.02"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
+
+            <place id="P9">
+                <name>
+                    <text>Packaged</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="2209.21" y="111.51"/>
                     <dimension x="40" y="40"/>
                 </graphics>
             </place>
@@ -182,7 +182,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="175" y="100"/>
+                    <position x="-540.67" y="103.73"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -201,7 +201,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="325" y="100"/>
+                    <position x="-183.89" y="114.47"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -220,7 +220,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="475" y="100"/>
+                    <position x="183.81" y="142.56"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -239,7 +239,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="625" y="100"/>
+                    <position x="560.45" y="212.20"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -247,7 +247,7 @@
                     <task>task_assembler</task>
                     <priority>3</priority>
                     <period>300</period>
-                    <comment>Requires 2 processed items</comment>
+                    <comment>Requires 2 processed items OR 2 assembled items for re-assembly</comment>
                 </toolspecific>
             </transition>
 
@@ -259,7 +259,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="775" y="100"/>
+                    <position x="745.50" y="379.66"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -278,7 +278,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="925" y="100"/>
+                    <position x="945.35" y="153.79"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -286,6 +286,7 @@
                     <task>task_quality_control</task>
                     <priority>3</priority>
                     <period>300</period>
+                    <comment>Quality check after optional multiple assemblies</comment>
                 </toolspecific>
             </transition>
 
@@ -297,7 +298,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="1075" y="100"/>
+                    <position x="1317.17" y="97.24"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -316,7 +317,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="1225" y="100"/>
+                    <position x="1683.89" y="80.77"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -335,7 +336,7 @@
                     </graphics>
                 </name>
                 <graphics>
-                    <position x="1375" y="100"/>
+                    <position x="2039.98" y="95.97"/>
                     <dimension x="40" y="40"/>
                     <fill color="#000000"/>
                 </graphics>
@@ -349,181 +350,152 @@
             <!-- ARCS (Flow Relations) -->
             <!-- ==================== -->
 
-            <!-- T0: Load Material (P0 -> T0 -> P1) -->
+            <!-- Standard linear flow -->
             <arc id="A0" source="P0" target="T0">
                 <name>
-                    <text>Input: Raw Material</text>
+                    <text>Raw material consumption</text>
                 </name>
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="120" y="120"/>
-                </graphics>
             </arc>
 
             <arc id="A1" source="T0" target="P1">
                 <name>
-                    <text>Output: Ready to Process</text>
+                    <text>Material loaded</text>
                 </name>
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="195" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T1: Start Processing (P1 -> T1 -> P2) -->
             <arc id="A2" source="P1" target="T1">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="270" y="120"/>
-                </graphics>
             </arc>
 
             <arc id="A3" source="T1" target="P2">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="345" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T2: Finish Processing (P2 -> T2 -> P3) -->
             <arc id="A4" source="P2" target="T2">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="420" y="120"/>
-                </graphics>
             </arc>
 
             <arc id="A5" source="T2" target="P3">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="495" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T3: Start Assembly (P3 -> T3 -> P4) with weight 2 -->
+            <!-- First assembly: 2 processed items -> 1 assembled -->
             <arc id="A6" source="P3" target="T3">
+                <name>
+                    <text>Initial assembly input</text>
+                </name>
                 <inscription>
                     <text>2</text>
                 </inscription>
-                <graphics>
-                    <position x="570" y="120"/>
-                </graphics>
+                <toolspecific tool="petri_net" version="1.0">
+                    <arctype>normal</arctype>
+                    <comment>First assembly requires 2 processed items</comment>
+                </toolspecific>
             </arc>
 
             <arc id="A7" source="T3" target="P4">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="645" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T4: Finish Assembly (P4 -> T4 -> P5) -->
             <arc id="A8" source="P4" target="T4">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="720" y="120"/>
-                </graphics>
             </arc>
 
             <arc id="A9" source="T4" target="P5">
                 <inscription>
                     <text>1</text>
                 </inscription>
+            </arc>
+
+            <!-- OPTIONAL RE-ASSEMBLY: Assembled items can go back for additional assembly -->
+            <arc id="A10" source="P5" target="T3">
+                <name>
+                    <text>Re-assembly input (OPTIONAL)</text>
+                </name>
+                <inscription>
+                    <text>2</text>
+                </inscription>
+                <toolspecific tool="petri_net" version="1.0">
+                    <arctype>optional</arctype>
+                    <comment>Optional: 2 assembled items can be re-assembled for enhanced product</comment>
+                </toolspecific>
                 <graphics>
-                    <position x="795" y="120"/>
+                    <line color="#FF6600" style="dashed"/>
                 </graphics>
             </arc>
 
-            <!-- T5: Start QC (P5 -> T5 -> P6) -->
-            <arc id="A10" source="P5" target="T5">
+            <!-- Quality Control path -->
+            <arc id="A11" source="P5" target="T5">
+                <name>
+                    <text>To quality check</text>
+                </name>
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="870" y="120"/>
-                </graphics>
+                <toolspecific tool="petri_net" version="1.0">
+                    <comment>After assembly (single or multiple), proceed to QC</comment>
+                </toolspecific>
             </arc>
 
-            <arc id="A11" source="T5" target="P6">
+            <arc id="A12" source="T5" target="P6">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="945" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T6: Pass QC (P6 -> T6 -> P7) -->
-            <arc id="A12" source="P6" target="T6">
+            <arc id="A13" source="P6" target="T6">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="1020" y="120"/>
-                </graphics>
             </arc>
 
-            <arc id="A13" source="T6" target="P7">
+            <arc id="A14" source="T6" target="P7">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="1095" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T7: Package (P7 -> T7 -> P8) -->
-            <arc id="A14" source="P7" target="T7">
+            <!-- Packaging and shipping -->
+            <arc id="A15" source="P7" target="T7">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="1170" y="120"/>
-                </graphics>
             </arc>
 
-            <arc id="A15" source="T7" target="P8">
+            <arc id="A16" source="T7" target="P8">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="1245" y="120"/>
-                </graphics>
             </arc>
 
-            <!-- T8: Ship (P8 -> T8 -> P9) -->
-            <arc id="A16" source="P8" target="T8">
+            <arc id="A17" source="P8" target="T8">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="1320" y="120"/>
-                </graphics>
             </arc>
 
-            <arc id="A17" source="T8" target="P9">
+            <arc id="A18" source="T8" target="P9">
                 <inscription>
                     <text>1</text>
                 </inscription>
-                <graphics>
-                    <position x="1395" y="120"/>
-                </graphics>
             </arc>
 
             <!-- ==================== -->
@@ -541,17 +513,52 @@
                     <configUSE_MUTEXES>1</configUSE_MUTEXES>
                 </configuration>
                 <description>
-                    Manufacturing process control system using Petri Net as Model of Computation.
-                    The system models a complete production line from raw materials to packaged products.
+                    Manufacturing process with OPTIONAL MULTI-ASSEMBLY capability.
 
-                    Flow: Raw Material → Load → Process → Assemble (2:1) → QC → Package → Ship
+                    Flow: Raw Material → Process → Assemble → [Optional: Re-Assemble] → QC → Package → Ship
 
                     Key Features:
-                    - Assembly stage requires 2 processed items (synchronization point)
-                    - All transitions are controlled by FreeRTOS tasks
-                    - Thread-safe token manipulation using mutexes
-                    - Real-time monitoring of system state
+                    - Primary assembly: Combines 2 processed items into 1 assembled product
+                    - OPTIONAL re-assembly: 2 assembled products can be combined for enhanced assembly
+                    - Assembly loop (P5→T3) creates choice: proceed to QC OR re-assemble
+                    - Non-deterministic behavior: conflict between T3 and T5 at P5
+                    - Quality check always follows assembly (single or multiple iterations)
+
+                    Petri Net Properties:
+                    - Conflict at P5: T3 (re-assembly) competes with T5 (QC)
+                    - Free choice: Decision between re-assembly and QC depends on token availability
+                    - Bounded: Maximum tokens in P5 limited by assembly rate
+                    - Live: All transitions remain firable under appropriate conditions
+
+                    Implementation Strategy:
+                    - Priority-based: Give T5 (QC) higher priority to prefer moving forward
+                    - Time-based: Use delays/timeouts to allow re-assembly attempts
+                    - Control-based: Add external control logic to decide assembly iterations
+                    - Resource-based: Let token availability naturally resolve conflicts
                 </description>
+            </toolspecific>
+
+            <toolspecific tool="analysis" version="1.0">
+                <properties>
+                    <property name="boundedness">bounded</property>
+                    <property name="liveness">live</property>
+                    <property name="reversibility">false</property>
+                    <property name="conservativeness">false</property>
+                    <conflict>
+                        <place id="P5">
+                            <competing_transitions>
+                                <transition id="T3" weight="2"/>
+                                <transition id="T5" weight="1"/>
+                            </competing_transitions>
+                            <resolution_strategy>
+                                <option>Priority-based (prefer T5 for forward progress)</option>
+                                <option>Probabilistic (random choice)</option>
+                                <option>Resource-controlled (external signal)</option>
+                                <option>Capacity-based (if P5 has &gt;= 2 tokens, enable T3)</option>
+                            </resolution_strategy>
+                        </place>
+                    </conflict>
+                </properties>
             </toolspecific>
 
         </page>
