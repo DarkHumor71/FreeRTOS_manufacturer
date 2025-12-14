@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<pnml>
+  <net id="ManufacturingNet" type="P/T net">
+    <!-- Places -->
+    <place id="P0">
+      <name><text>Raw Material</text></name>
+      <initialMarking><text>10</text></initialMarking>
+    </place>
+    <place id="P1">
+      <name><text>Ready to Process</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P2">
+      <name><text>Processing</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P3">
+      <name><text>Processed</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P4">
+      <name><text>Ready to Assemble</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P5">
+      <name><text>Assembled</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P6">
+      <name><text>Quality Check</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P7">
+      <name><text>Passed QC</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P8">
+      <name><text>Packaging</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+    <place id="P9">
+      <name><text>Assembly</text></name>
+      <initialMarking><text>0</text></initialMarking>
+    </place>
+
+    <!-- Transitions -->
+    <transition id="T0">
+      <name><text>Load Material</text></name>
+    </transition>
+    <transition id="T1">
+      <name><text>Start Processing</text></name>
+    </transition>
+    <transition id="T2">
+      <name><text>Finish Processing</text></name>
+    </transition>
+    <transition id="T3">
+      <name><text>Start Assembly</text></name>
+    </transition>
+    <transition id="T4">
+      <name><text>Finish Assembly</text></name>
+    </transition>
+    <transition id="T5">
+      <name><text>Start QC</text></name>
+    </transition>
+    <transition id="T6">
+      <name><text>Pass QC</text></name>
+    </transition>
+    <transition id="T7">
+      <name><text>Package Product</text></name>
+    </transition>
+
+    <!-- Arcs -->
+    <!-- Load Material: Raw Material -> Ready to Process -->
+    <arc id="A0" source="P0" target="T0">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A1" source="T0" target="P1">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Start Processing: Ready to Process -> Processing -->
+    <arc id="A2" source="P1" target="T1">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A3" source="T1" target="P2">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Finish Processing: Processing -> Processed -->
+    <arc id="A4" source="P2" target="T2">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A5" source="T2" target="P3">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Start Assembly: Processed (2) -> Ready to Assemble -->
+    <arc id="A6" source="P3" target="T3">
+      <inscription><text>2</text></inscription>
+    </arc>
+    <arc id="A7" source="T3" target="P4">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Finish Assembly: Ready to Assemble -> Assembled -->
+    <arc id="A8" source="P4" target="T4">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A9" source="T4" target="P5">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Start QC: Assembled -> Quality Check -->
+    <arc id="A10" source="P5" target="T5">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A11" source="T5" target="P6">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Pass QC: Quality Check -> Passed QC -->
+    <arc id="A12" source="P6" target="T6">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A13" source="T6" target="P7">
+      <inscription><text>1</text></inscription>
+    </arc>
+
+    <!-- Package Product: Passed QC -> Packaging -->
+    <arc id="A14" source="P7" target="T7">
+      <inscription><text>1</text></inscription>
+    </arc>
+    <arc id="A15" source="T7" target="P8">
+      <inscription><text>1</text></inscription>
+    </arc>
+  </net>
+</pnml>

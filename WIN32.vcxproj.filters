@@ -231,5 +231,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="PIPE.pnml" />
   </ItemGroup>
 </Project>
