@@ -1,137 +1,559 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<pnml>
-  <net id="ManufacturingNet" type="P/T net">
-    <!-- Places -->
-    <place id="P0">
-      <name><text>Raw Material</text></name>
-      <initialMarking><text>10</text></initialMarking>
-    </place>
-    <place id="P1">
-      <name><text>Ready to Process</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P2">
-      <name><text>Processing</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P3">
-      <name><text>Processed</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P4">
-      <name><text>Ready to Assemble</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P5">
-      <name><text>Assembled</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P6">
-      <name><text>Quality Check</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P7">
-      <name><text>Passed QC</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P8">
-      <name><text>Packaging</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
-    <place id="P9">
-      <name><text>Assembly</text></name>
-      <initialMarking><text>0</text></initialMarking>
-    </place>
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+    <net id="manufacturing_process" type="http://www.pnml.org/version-2009/grammar/ptnet">
+        <page id="main_page">
+            <name>
+                <text>Manufacturing Process Control System</text>
+            </name>
 
-    <!-- Transitions -->
-    <transition id="T0">
-      <name><text>Load Material</text></name>
-    </transition>
-    <transition id="T1">
-      <name><text>Start Processing</text></name>
-    </transition>
-    <transition id="T2">
-      <name><text>Finish Processing</text></name>
-    </transition>
-    <transition id="T3">
-      <name><text>Start Assembly</text></name>
-    </transition>
-    <transition id="T4">
-      <name><text>Finish Assembly</text></name>
-    </transition>
-    <transition id="T5">
-      <name><text>Start QC</text></name>
-    </transition>
-    <transition id="T6">
-      <name><text>Pass QC</text></name>
-    </transition>
-    <transition id="T7">
-      <name><text>Package Product</text></name>
-    </transition>
+            <!-- ==================== -->
+            <!-- PLACES (States)      -->
+            <!-- ==================== -->
 
-    <!-- Arcs -->
-    <!-- Load Material: Raw Material -> Ready to Process -->
-    <arc id="A0" source="P0" target="T0">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A1" source="T0" target="P1">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P0">
+                <name>
+                    <text>Raw Material</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>10</text>
+                </initialMarking>
+                <graphics>
+                    <position x="100" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Start Processing: Ready to Process -> Processing -->
-    <arc id="A2" source="P1" target="T1">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A3" source="T1" target="P2">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P1">
+                <name>
+                    <text>Ready to Process</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="250" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Finish Processing: Processing -> Processed -->
-    <arc id="A4" source="P2" target="T2">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A5" source="T2" target="P3">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P2">
+                <name>
+                    <text>Processing</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="400" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Start Assembly: Processed (2) -> Ready to Assemble -->
-    <arc id="A6" source="P3" target="T3">
-      <inscription><text>2</text></inscription>
-    </arc>
-    <arc id="A7" source="T3" target="P4">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P3">
+                <name>
+                    <text>Processed</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="550" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Finish Assembly: Ready to Assemble -> Assembled -->
-    <arc id="A8" source="P4" target="T4">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A9" source="T4" target="P5">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P4">
+                <name>
+                    <text>Ready to Assemble</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="700" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Start QC: Assembled -> Quality Check -->
-    <arc id="A10" source="P5" target="T5">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A11" source="T5" target="P6">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P5">
+                <name>
+                    <text>Assembly</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="850" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Pass QC: Quality Check -> Passed QC -->
-    <arc id="A12" source="P6" target="T6">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A13" source="T6" target="P7">
-      <inscription><text>1</text></inscription>
-    </arc>
+            <place id="P6">
+                <name>
+                    <text>Assembled</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="1000" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
 
-    <!-- Package Product: Passed QC -> Packaging -->
-    <arc id="A14" source="P7" target="T7">
-      <inscription><text>1</text></inscription>
-    </arc>
-    <arc id="A15" source="T7" target="P8">
-      <inscription><text>1</text></inscription>
-    </arc>
-  </net>
+            <place id="P7">
+                <name>
+                    <text>Quality Check</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="1150" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
+
+            <place id="P8">
+                <name>
+                    <text>Passed QC</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="1300" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
+
+            <place id="P9">
+                <name>
+                    <text>Packaging</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <initialMarking>
+                    <text>0</text>
+                </initialMarking>
+                <graphics>
+                    <position x="1450" y="100"/>
+                    <dimension x="40" y="40"/>
+                </graphics>
+            </place>
+
+            <!-- ==================== -->
+            <!-- TRANSITIONS (Events) -->
+            <!-- ==================== -->
+
+            <transition id="T0">
+                <name>
+                    <text>Load Material</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="175" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_material_loader</task>
+                    <priority>3</priority>
+                    <period>800</period>
+                </toolspecific>
+            </transition>
+
+            <transition id="T1">
+                <name>
+                    <text>Start Processing</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="325" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_processor</task>
+                    <priority>3</priority>
+                    <period>300</period>
+                </toolspecific>
+            </transition>
+
+            <transition id="T2">
+                <name>
+                    <text>Finish Processing</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="475" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_processor</task>
+                    <priority>3</priority>
+                    <delay>1500</delay>
+                </toolspecific>
+            </transition>
+
+            <transition id="T3">
+                <name>
+                    <text>Start Assembly</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="625" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_assembler</task>
+                    <priority>3</priority>
+                    <period>300</period>
+                    <comment>Requires 2 processed items</comment>
+                </toolspecific>
+            </transition>
+
+            <transition id="T4">
+                <name>
+                    <text>Finish Assembly</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="775" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_assembler</task>
+                    <priority>3</priority>
+                    <delay>1200</delay>
+                </toolspecific>
+            </transition>
+
+            <transition id="T5">
+                <name>
+                    <text>Start QC</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="925" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_quality_control</task>
+                    <priority>3</priority>
+                    <period>300</period>
+                </toolspecific>
+            </transition>
+
+            <transition id="T6">
+                <name>
+                    <text>Pass QC</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="1075" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_quality_control</task>
+                    <priority>3</priority>
+                    <delay>800</delay>
+                </toolspecific>
+            </transition>
+
+            <transition id="T7">
+                <name>
+                    <text>Package Product</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="1225" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_packager</task>
+                    <priority>3</priority>
+                    <period>600</period>
+                </toolspecific>
+            </transition>
+
+            <transition id="T8">
+                <name>
+                    <text>Ship Product</text>
+                    <graphics>
+                        <offset x="0" y="-30"/>
+                    </graphics>
+                </name>
+                <graphics>
+                    <position x="1375" y="100"/>
+                    <dimension x="40" y="40"/>
+                    <fill color="#000000"/>
+                </graphics>
+                <toolspecific tool="FreeRTOS" version="1.0">
+                    <task>task_packager</task>
+                    <priority>3</priority>
+                </toolspecific>
+            </transition>
+
+            <!-- ==================== -->
+            <!-- ARCS (Flow Relations) -->
+            <!-- ==================== -->
+
+            <!-- T0: Load Material (P0 -> T0 -> P1) -->
+            <arc id="A0" source="P0" target="T0">
+                <name>
+                    <text>Input: Raw Material</text>
+                </name>
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="120" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A1" source="T0" target="P1">
+                <name>
+                    <text>Output: Ready to Process</text>
+                </name>
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="195" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T1: Start Processing (P1 -> T1 -> P2) -->
+            <arc id="A2" source="P1" target="T1">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="270" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A3" source="T1" target="P2">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="345" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T2: Finish Processing (P2 -> T2 -> P3) -->
+            <arc id="A4" source="P2" target="T2">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="420" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A5" source="T2" target="P3">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="495" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T3: Start Assembly (P3 -> T3 -> P4) with weight 2 -->
+            <arc id="A6" source="P3" target="T3">
+                <inscription>
+                    <text>2</text>
+                </inscription>
+                <graphics>
+                    <position x="570" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A7" source="T3" target="P4">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="645" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T4: Finish Assembly (P4 -> T4 -> P5) -->
+            <arc id="A8" source="P4" target="T4">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="720" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A9" source="T4" target="P5">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="795" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T5: Start QC (P5 -> T5 -> P6) -->
+            <arc id="A10" source="P5" target="T5">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="870" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A11" source="T5" target="P6">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="945" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T6: Pass QC (P6 -> T6 -> P7) -->
+            <arc id="A12" source="P6" target="T6">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="1020" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A13" source="T6" target="P7">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="1095" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T7: Package (P7 -> T7 -> P8) -->
+            <arc id="A14" source="P7" target="T7">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="1170" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A15" source="T7" target="P8">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="1245" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- T8: Ship (P8 -> T8 -> P9) -->
+            <arc id="A16" source="P8" target="T8">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="1320" y="120"/>
+                </graphics>
+            </arc>
+
+            <arc id="A17" source="T8" target="P9">
+                <inscription>
+                    <text>1</text>
+                </inscription>
+                <graphics>
+                    <position x="1395" y="120"/>
+                </graphics>
+            </arc>
+
+            <!-- ==================== -->
+            <!-- METADATA             -->
+            <!-- ==================== -->
+
+            <toolspecific tool="FreeRTOS" version="1.0">
+                <configuration>
+                    <configCPU_CLOCK_HZ>100000000</configCPU_CLOCK_HZ>
+                    <configTICK_RATE_HZ>1000</configTICK_RATE_HZ>
+                    <configMAX_PRIORITIES>5</configMAX_PRIORITIES>
+                    <configMINIMAL_STACK_SIZE>128</configMINIMAL_STACK_SIZE>
+                    <configTOTAL_HEAP_SIZE>20480</configTOTAL_HEAP_SIZE>
+                    <configUSE_PREEMPTION>1</configUSE_PREEMPTION>
+                    <configUSE_MUTEXES>1</configUSE_MUTEXES>
+                </configuration>
+                <description>
+                    Manufacturing process control system using Petri Net as Model of Computation.
+                    The system models a complete production line from raw materials to packaged products.
+
+                    Flow: Raw Material → Load → Process → Assemble (2:1) → QC → Package → Ship
+
+                    Key Features:
+                    - Assembly stage requires 2 processed items (synchronization point)
+                    - All transitions are controlled by FreeRTOS tasks
+                    - Thread-safe token manipulation using mutexes
+                    - Real-time monitoring of system state
+                </description>
+            </toolspecific>
+
+        </page>
+    </net>
 </pnml>
