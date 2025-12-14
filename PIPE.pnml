@@ -1,566 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
-    <net id="manufacturing_process_multi_assembly" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <net id="manufacturing_process_advanced" type="http://www.pnml.org/version-2009/grammar/ptnet">
         <page id="main_page">
             <name>
-                <text>Manufacturing Process with Optional Multi-Assembly</text>
+                <text>Advanced Manufacturing Process</text>
             </name>
 
             <!-- ==================== -->
             <!-- PLACES (States)      -->
             <!-- ==================== -->
-
             <place id="P0">
-                <name>
-                    <text>Raw Material</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>10</text>
-                </initialMarking>
-                <graphics>
-                    <position x="-710.66" y="102.02"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Raw Material</text></name>
+                <initialMarking><text>10</text></initialMarking>
             </place>
-
             <place id="P1">
-                <name>
-                    <text>Ready to Process</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="-364.12" y="107.56"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Ready to Process</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P2">
-                <name>
-                    <text>Processing</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="-1.09" y="125.60"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Processing</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P3">
-                <name>
-                    <text>Processed</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="370.85" y="168.47"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Processed</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P4">
-                <name>
-                    <text>Ready to Assemble</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="579.43" y="384.24"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Ready to Assemble</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P5">
-                <name>
-                    <text>Assembled</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="757.73" y="206.99"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Assembled</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P6">
-                <name>
-                    <text>Quality Check</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="1131.80" y="119.66"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Quality Check</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P7">
-                <name>
-                    <text>Passed QC</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="1501.37" y="84.55"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Passed QC</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P8">
-                <name>
-                    <text>Ready to Package</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="1863.89" y="85.02"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Ready to Package</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
-
             <place id="P9">
-                <name>
-                    <text>Packaged</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <initialMarking>
-                    <text>0</text>
-                </initialMarking>
-                <graphics>
-                    <position x="2209.21" y="111.51"/>
-                    <dimension x="40" y="40"/>
-                </graphics>
+                <name><text>Packaged</text></name>
+                <initialMarking><text>0</text></initialMarking>
+            </place>
+            <!-- Parallel Painting/Coating -->
+            <place id="P10">
+                <name><text>Painted</text></name>
+                <initialMarking><text>0</text></initialMarking>
+            </place>
+            <!-- Resource constraint -->
+            <place id="P11">
+                <name><text>Worker</text></name>
+                <initialMarking><text>3</text></initialMarking>
+            </place>
+            <!-- Rework/Reject loop -->
+            <place id="P12">
+                <name><text>Rework Bin</text></name>
+                <initialMarking><text>0</text></initialMarking>
             </place>
 
             <!-- ==================== -->
             <!-- TRANSITIONS (Events) -->
             <!-- ==================== -->
-
-            <transition id="T0">
-                <name>
-                    <text>Load Material</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="-540.67" y="103.73"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_material_loader</task>
-                    <priority>3</priority>
-                    <period>800</period>
-                </toolspecific>
-            </transition>
-
-            <transition id="T1">
-                <name>
-                    <text>Start Processing</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="-183.89" y="114.47"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_processor</task>
-                    <priority>3</priority>
-                    <period>300</period>
-                </toolspecific>
-            </transition>
-
-            <transition id="T2">
-                <name>
-                    <text>Finish Processing</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="183.81" y="142.56"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_processor</task>
-                    <priority>3</priority>
-                    <delay>1500</delay>
-                </toolspecific>
-            </transition>
-
-            <transition id="T3">
-                <name>
-                    <text>Start Assembly</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="560.45" y="212.20"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_assembler</task>
-                    <priority>3</priority>
-                    <period>300</period>
-                    <comment>Requires 2 processed items OR 2 assembled items for re-assembly</comment>
-                </toolspecific>
-            </transition>
-
-            <transition id="T4">
-                <name>
-                    <text>Finish Assembly</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="745.50" y="379.66"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_assembler</task>
-                    <priority>3</priority>
-                    <delay>1200</delay>
-                </toolspecific>
-            </transition>
-
-            <transition id="T5">
-                <name>
-                    <text>Start QC</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="945.35" y="153.79"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_quality_control</task>
-                    <priority>3</priority>
-                    <period>300</period>
-                    <comment>Quality check after optional multiple assemblies</comment>
-                </toolspecific>
-            </transition>
-
-            <transition id="T6">
-                <name>
-                    <text>Pass QC</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="1317.17" y="97.24"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_quality_control</task>
-                    <priority>3</priority>
-                    <delay>800</delay>
-                </toolspecific>
-            </transition>
-
-            <transition id="T7">
-                <name>
-                    <text>Package Product</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="1683.89" y="80.77"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_packager</task>
-                    <priority>3</priority>
-                    <period>600</period>
-                </toolspecific>
-            </transition>
-
-            <transition id="T8">
-                <name>
-                    <text>Ship Product</text>
-                    <graphics>
-                        <offset x="0" y="-30"/>
-                    </graphics>
-                </name>
-                <graphics>
-                    <position x="2039.98" y="95.97"/>
-                    <dimension x="40" y="40"/>
-                    <fill color="#000000"/>
-                </graphics>
-                <toolspecific tool="FreeRTOS" version="1.0">
-                    <task>task_packager</task>
-                    <priority>3</priority>
-                </toolspecific>
-            </transition>
+            <transition id="T0"><name><text>Load Material</text></name></transition>
+            <transition id="T1"><name><text>Start Processing</text></name></transition>
+            <transition id="T2"><name><text>Finish Processing</text></name></transition>
+            <transition id="T3"><name><text>Start Assembly</text></name></transition>
+            <transition id="T4"><name><text>Finish Assembly</text></name></transition>
+            <transition id="T5"><name><text>Start QC</text></name></transition>
+            <transition id="T6"><name><text>Pass QC</text></name></transition>
+            <transition id="T7"><name><text>Package Product</text></name></transition>
+            <transition id="T8"><name><text>Ship Product</text></name></transition>
+            <!-- Parallel branch -->
+            <transition id="T9"><name><text>Paint</text></name></transition>
+            <!-- Rework/Reject -->
+            <transition id="T10"><name><text>Fail QC</text></name></transition>
+            <transition id="T11"><name><text>Rework Process</text></name></transition>
 
             <!-- ==================== -->
             <!-- ARCS (Flow Relations) -->
             <!-- ==================== -->
-
-            <!-- Standard linear flow -->
-            <arc id="A0" source="P0" target="T0">
-                <name>
-                    <text>Raw material consumption</text>
-                </name>
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A1" source="T0" target="P1">
-                <name>
-                    <text>Material loaded</text>
-                </name>
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A2" source="P1" target="T1">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A3" source="T1" target="P2">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A4" source="P2" target="T2">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A5" source="T2" target="P3">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <!-- First assembly: 2 processed items -> 1 assembled -->
-            <arc id="A6" source="P3" target="T3">
-                <name>
-                    <text>Initial assembly input</text>
-                </name>
-                <inscription>
-                    <text>2</text>
-                </inscription>
-                <toolspecific tool="petri_net" version="1.0">
-                    <arctype>normal</arctype>
-                    <comment>First assembly requires 2 processed items</comment>
-                </toolspecific>
-            </arc>
-
-            <arc id="A7" source="T3" target="P4">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A8" source="P4" target="T4">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A9" source="T4" target="P5">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <!-- OPTIONAL RE-ASSEMBLY: Assembled items can go back for additional assembly -->
-            <arc id="A10" source="P5" target="T3">
-                <name>
-                    <text>Re-assembly input (OPTIONAL)</text>
-                </name>
-                <inscription>
-                    <text>2</text>
-                </inscription>
-                <toolspecific tool="petri_net" version="1.0">
-                    <arctype>optional</arctype>
-                    <comment>Optional: 2 assembled items can be re-assembled for enhanced product</comment>
-                </toolspecific>
-                <graphics>
-                    <line color="#FF6600" style="dashed"/>
-                </graphics>
-            </arc>
-
-            <!-- Quality Control path -->
-            <arc id="A11" source="P5" target="T5">
-                <name>
-                    <text>To quality check</text>
-                </name>
-                <inscription>
-                    <text>1</text>
-                </inscription>
-                <toolspecific tool="petri_net" version="1.0">
-                    <comment>After assembly (single or multiple), proceed to QC</comment>
-                </toolspecific>
-            </arc>
-
-            <arc id="A12" source="T5" target="P6">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A13" source="P6" target="T6">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A14" source="T6" target="P7">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
+            <!-- Standard linear flow with worker resource -->
+            <arc id="A0" source="P0" target="T0"><inscription><text>1</text></inscription></arc>
+            <arc id="A1" source="T0" target="P1"><inscription><text>1</text></inscription></arc>
+            <arc id="A2" source="P1" target="T1"><inscription><text>1</text></inscription></arc>
+            <arc id="A3" source="P11" target="T1"><inscription><text>1</text></inscription></arc>
+            <arc id="A4" source="T1" target="P2"><inscription><text>1</text></inscription></arc>
+            <arc id="A5" source="T1" target="P11"><inscription><text>1</text></inscription></arc>
+            <arc id="A6" source="P2" target="T2"><inscription><text>1</text></inscription></arc>
+            <arc id="A7" source="P11" target="T2"><inscription><text>1</text></inscription></arc>
+            <arc id="A8" source="T2" target="P3"><inscription><text>1</text></inscription></arc>
+            <arc id="A9" source="T2" target="P11"><inscription><text>1</text></inscription></arc>
+            <!-- Parallel painting branch -->
+            <arc id="A10" source="P3" target="T9"><inscription><text>1</text></inscription></arc>
+            <arc id="A11" source="P11" target="T9"><inscription><text>1</text></inscription></arc>
+            <arc id="A12" source="T9" target="P10"><inscription><text>1</text></inscription></arc>
+            <arc id="A13" source="T9" target="P11"><inscription><text>1</text></inscription></arc>
+            <!-- Assembly path (can use painted or processed) -->
+            <arc id="A14" source="P3" target="T3"><inscription><text>2</text></inscription></arc>
+            <arc id="A15" source="P10" target="T3"><inscription><text>2</text></inscription></arc>
+            <arc id="A16" source="P11" target="T3"><inscription><text>1</text></inscription></arc>
+            <arc id="A17" source="T3" target="P4"><inscription><text>1</text></inscription></arc>
+            <arc id="A18" source="T3" target="P11"><inscription><text>1</text></inscription></arc>
+            <arc id="A19" source="P4" target="T4"><inscription><text>1</text></inscription></arc>
+            <arc id="A20" source="P11" target="T4"><inscription><text>1</text></inscription></arc>
+            <arc id="A21" source="T4" target="P5"><inscription><text>1</text></inscription></arc>
+            <arc id="A22" source="T4" target="P11"><inscription><text>1</text></inscription></arc>
+            <!-- Re-assembly (optional) -->
+            <arc id="A23" source="P5" target="T3"><inscription><text>2</text></inscription></arc>
+            <!-- QC with worker -->
+            <arc id="A24" source="P5" target="T5"><inscription><text>1</text></inscription></arc>
+            <arc id="A25" source="P11" target="T5"><inscription><text>1</text></inscription></arc>
+            <arc id="A26" source="T5" target="P6"><inscription><text>1</text></inscription></arc>
+            <arc id="A27" source="T5" target="P11"><inscription><text>1</text></inscription></arc>
+            <!-- Pass QC -->
+            <arc id="A28" source="P6" target="T6"><inscription><text>1</text></inscription></arc>
+            <arc id="A29" source="T6" target="P7"><inscription><text>1</text></inscription></arc>
+            <!-- Fail QC (rework loop) -->
+            <arc id="A30" source="P6" target="T10"><inscription><text>1</text></inscription></arc>
+            <arc id="A31" source="T10" target="P12"><inscription><text>1</text></inscription></arc>
+            <!-- Rework process: rework bin to ready to assemble -->
+            <arc id="A32" source="P12" target="T11"><inscription><text>1</text></inscription></arc>
+            <arc id="A33" source="P11" target="T11"><inscription><text>1</text></inscription></arc>
+            <arc id="A34" source="T11" target="P4"><inscription><text>1</text></inscription></arc>
+            <arc id="A35" source="T11" target="P11"><inscription><text>1</text></inscription></arc>
             <!-- Packaging and shipping -->
-            <arc id="A15" source="P7" target="T7">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A16" source="T7" target="P8">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A17" source="P8" target="T8">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <arc id="A18" source="T8" target="P9">
-                <inscription>
-                    <text>1</text>
-                </inscription>
-            </arc>
-
-            <!-- ==================== -->
-            <!-- METADATA             -->
-            <!-- ==================== -->
-
-            <toolspecific tool="FreeRTOS" version="1.0">
-                <configuration>
-                    <configCPU_CLOCK_HZ>100000000</configCPU_CLOCK_HZ>
-                    <configTICK_RATE_HZ>1000</configTICK_RATE_HZ>
-                    <configMAX_PRIORITIES>5</configMAX_PRIORITIES>
-                    <configMINIMAL_STACK_SIZE>128</configMINIMAL_STACK_SIZE>
-                    <configTOTAL_HEAP_SIZE>20480</configTOTAL_HEAP_SIZE>
-                    <configUSE_PREEMPTION>1</configUSE_PREEMPTION>
-                    <configUSE_MUTEXES>1</configUSE_MUTEXES>
-                </configuration>
-                <description>
-                    Manufacturing process with OPTIONAL MULTI-ASSEMBLY capability.
-
-                    Flow: Raw Material → Process → Assemble → [Optional: Re-Assemble] → QC → Package → Ship
-
-                    Key Features:
-                    - Primary assembly: Combines 2 processed items into 1 assembled product
-                    - OPTIONAL re-assembly: 2 assembled products can be combined for enhanced assembly
-                    - Assembly loop (P5→T3) creates choice: proceed to QC OR re-assemble
-                    - Non-deterministic behavior: conflict between T3 and T5 at P5
-                    - Quality check always follows assembly (single or multiple iterations)
-
-                    Petri Net Properties:
-                    - Conflict at P5: T3 (re-assembly) competes with T5 (QC)
-                    - Free choice: Decision between re-assembly and QC depends on token availability
-                    - Bounded: Maximum tokens in P5 limited by assembly rate
-                    - Live: All transitions remain firable under appropriate conditions
-
-                    Implementation Strategy:
-                    - Priority-based: Give T5 (QC) higher priority to prefer moving forward
-                    - Time-based: Use delays/timeouts to allow re-assembly attempts
-                    - Control-based: Add external control logic to decide assembly iterations
-                    - Resource-based: Let token availability naturally resolve conflicts
-                </description>
-            </toolspecific>
-
-            <toolspecific tool="analysis" version="1.0">
-                <properties>
-                    <property name="boundedness">bounded</property>
-                    <property name="liveness">live</property>
-                    <property name="reversibility">false</property>
-                    <property name="conservativeness">false</property>
-                    <conflict>
-                        <place id="P5">
-                            <competing_transitions>
-                                <transition id="T3" weight="2"/>
-                                <transition id="T5" weight="1"/>
-                            </competing_transitions>
-                            <resolution_strategy>
-                                <option>Priority-based (prefer T5 for forward progress)</option>
-                                <option>Probabilistic (random choice)</option>
-                                <option>Resource-controlled (external signal)</option>
-                                <option>Capacity-based (if P5 has &gt;= 2 tokens, enable T3)</option>
-                            </resolution_strategy>
-                        </place>
-                    </conflict>
-                </properties>
-            </toolspecific>
-
+            <arc id="A36" source="P7" target="T7"><inscription><text>1</text></inscription></arc>
+            <arc id="A37" source="T7" target="P8"><inscription><text>1</text></inscription></arc>
+            <arc id="A38" source="P8" target="T8"><inscription><text>1</text></inscription></arc>
+            <arc id="A39" source="T8" target="P9"><inscription><text>1</text></inscription></arc>
         </page>
     </net>
 </pnml>
