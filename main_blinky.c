@@ -10,10 +10,21 @@
  * - Tokens: Represent workpieces/materials flowing through the system
  */
 
+#if defined(_MSC_VER)
+ // MSVC does not support C11 atomics in C mode
+typedef volatile long atomic_bool;
+#define atomic_store(ptr, val) (*(ptr) = (val))
+#define atomic_load(ptr) (*(ptr))
+#else
+#include <stdatomic.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 #include <windows.h>
 #include <time.h>
 #include <stdarg.h>
@@ -32,6 +43,10 @@
 #define COLOR_BLUE    "\x1b[34m"
 #define COLOR_MAGENTA "\x1b[35m"
 #define COLOR_CYAN    "\x1b[36m"
+#define STATUS_SERVER_PORT 8080
+#define STATUS_JSON_BUFFER 2048
+#define STATUS_RESPONSE_BUFFER (STATUS_JSON_BUFFER + 256)
+#define STATUS_SERVER_BACKLOG 5
 
 // ====================
 // PETRI NET STRUCTURE
@@ -73,6 +88,9 @@ QueueHandle_t log_queue;
 // Mutex for console output (prevents interleaved prints)
 SemaphoreHandle_t console_mutex;
 SemaphoreHandle_t rng_mutex;
+
+// Atomic flag to signal status updateR
+static atomic_bool status_dirty = false;
 
 // ====================
 // CONSOLE OUTPUT HELPERS
@@ -277,6 +295,9 @@ bool fire_transition(int trans_idx) {
     }
 
     xSemaphoreGive(manufacturing_net.net_mutex);
+
+    // Mark status as dirty for immediate update
+    atomic_store(&status_dirty, true);
 
     return true;
 }
@@ -515,6 +536,7 @@ void task_assembler(void* params) {
 }
 /**
  * @brief FreeRTOS task: Routes product after QC1, randomly selecting some for painting.
+ * FIXED VERSION: Eliminates TOCTOU race condition
  */
 void task_painter_router(void* params) {
     const int paint_chance_percent = 30; // 30% chance to be selected for paint
@@ -522,9 +544,8 @@ void task_painter_router(void* params) {
     int paint_count = 0;
 
     while (1) {
-        // Check if item is waiting at the decision point (P_POST_QC1_BUFFER)
-        if (get_place_tokens(P_POST_QC1_BUFFER) > 0) {
-
+        // Check if paint selection is possible (eliminates race condition)
+        if (is_transition_enabled(T_SELECT_TO_PAINT)) {
             // Random Decision: Paint or Skip
             if ((thread_safe_rand() % 100) < paint_chance_percent) {
                 // Decision: Paint
@@ -533,12 +554,17 @@ void task_painter_router(void* params) {
                     safe_printf(COLOR_MAGENTA, "[Router] Item #%d selected for custom paint.\n", paint_count);
                     vTaskDelay(pdMS_TO_TICKS(1500)); // Simulate Painting Time
                     safe_printf(COLOR_MAGENTA, "[Router] Item #%d finished painting -> Waiting for QC2.\n", paint_count);
+                } else {
+                    safe_printf(COLOR_RED, "[Router] ERROR: Failed to select item for painting\n");
                 }
-            }
-            else {
-                // Decision: Skip Paint
-                if (fire_transition(T_SKIP_PAINT)) {
-                    safe_printf(COLOR_CYAN, "[Router] Item skipped paint -> Direct to Packaging.\n");
+            } else {
+                // Decision: Skip Paint - check if skip is enabled
+                if (is_transition_enabled(T_SKIP_PAINT)) {
+                    if (fire_transition(T_SKIP_PAINT)) {
+                        safe_printf(COLOR_CYAN, "[Router] Item skipped paint -> Direct to Packaging.\n");
+                    } else {
+                        safe_printf(COLOR_RED, "[Router] ERROR: Failed to skip painting\n");
+                    }
                 }
             }
         }
@@ -548,8 +574,6 @@ void task_painter_router(void* params) {
 /**
  * @brief FreeRTOS task: Performs quality control on assembled items.
  * @param params Unused task parameter.
- */
- /**
   * @brief FreeRTOS task: Performs quality control (both QC1 and QC2).
   */
 void task_quality_control(void* params) {
@@ -560,33 +584,47 @@ void task_quality_control(void* params) {
 
     while (1) {
         bool worked = false;
+        int start_transition = -1;
         int pass_transition = -1;
         int fail_transition = -1;
 
         // PRIORITY 1: Post-paint QC2 takes precedence
-        if (fire_transition(T_START_QC_2)) {
-            safe_printf(COLOR_YELLOW, "[QC Worker] Performing POST-PAINT check #%d...\n", qc_count + 1);
-            vTaskDelay(qc_duration);
+        if (is_transition_enabled(T_START_QC_2)) {
+            start_transition = T_START_QC_2;
             pass_transition = T_PASS_QC_2;
             fail_transition = T_FAIL_QC_2;
             worked = true;
         }
         // PRIORITY 2: Pre-paint QC1
-        else if (fire_transition(T_START_QC_1)) {
-            safe_printf(COLOR_YELLOW, "[QC Worker] Performing PRE-PAINT check #%d...\n", qc_count + 1);
-            vTaskDelay(qc_duration);
+        else if (is_transition_enabled(T_START_QC_1)) {
+            start_transition = T_START_QC_1;
             pass_transition = T_PASS_QC_1;
             fail_transition = T_FAIL_QC_1;
             worked = true;
         }
 
         if (worked) {
+            // Fire the start transition
+            if (!fire_transition(start_transition)) {
+                safe_printf(COLOR_RED, "[QC Worker] ERROR: Failed to start QC check\n");
+                continue;
+            }
+
             qc_count++;
-            if ((thread_safe_rand() % 100) < fail_chance_percent) {
-                fire_transition(fail_transition);
+            safe_printf(COLOR_YELLOW, "[QC Worker] Performing check #%d...\n", qc_count);
+            vTaskDelay(qc_duration);
+
+            // Determine pass/fail and fire appropriate transition
+            int result_transition = ((thread_safe_rand() % 100) < fail_chance_percent) ? fail_transition : pass_transition;
+
+            if (!fire_transition(result_transition)) {
+                safe_printf(COLOR_RED, "[QC Worker] ERROR: Failed to complete QC check #%d\n", qc_count);
+                continue;
+            }
+
+            if (result_transition == fail_transition) {
                 safe_printf(COLOR_RED, "[QC Worker] Check #%d FAILED (5%% chance) -> Rework Bin\n", qc_count);
             } else {
-                fire_transition(pass_transition);
                 safe_printf(COLOR_GREEN, "[QC Worker] Check #%d PASSED -> Next Stage\n", qc_count);
             }
         }
@@ -637,36 +675,116 @@ void task_packager(void* params) {
     }
 }
 
-/**
- * @brief FreeRTOS task: Monitors and prints the status of the manufacturing system.
- * @param params Unused task parameter.
- */
-void task_monitor(void* params) {
-    TickType_t last_wake = xTaskGetTickCount();
+// ====================
+// JSON STATUS SERVER
+// ====================
+
+static int build_status_payload(char* buffer, size_t size) {
+    if (size == 0) {
+        return 0;
+    }
+
+    int offset = snprintf(buffer, size, "{\"places\":[");
+    for (int i = 0; i < manufacturing_net.num_places && offset < (int)size; i++) {
+        int tokens = get_place_tokens(i);
+        int written = snprintf(buffer + offset, size - offset,
+            "{\"name\":\"%s\",\"tokens\":%d}%s",
+            manufacturing_net.places[i].name,
+            tokens,
+            (i + 1 < manufacturing_net.num_places) ? "," : "");
+        if (written < 0) {
+            break;
+        }
+        offset += written;
+    }
+
+    if (offset < (int)size) {
+        offset += snprintf(buffer + offset, size - offset, "]}");
+    }
+
+    // After building payload, clear dirty flag
+    atomic_store(&status_dirty, false);
+    return offset >= (int)size ? (int)size - 1 : offset;
+}
+
+static void task_status_server(void* params) {
+    (void)params;
+
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        vTaskDelete(NULL);
+        return;
+    }
+
+    SOCKET listen_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (listen_socket == INVALID_SOCKET) {
+        WSACleanup();
+        vTaskDelete(NULL);
+        return;
+    }
+
+    int opt = 1;
+    setsockopt(listen_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+
+    struct sockaddr_in service;
+    ZeroMemory(&service, sizeof(service));
+    service.sin_family = AF_INET;
+    // Bind to all network interfaces for external access
+    service.sin_addr.s_addr = INADDR_ANY;
+    service.sin_port = htons(STATUS_SERVER_PORT);
+
+    if (bind(listen_socket, (struct sockaddr*)&service, sizeof(service)) == SOCKET_ERROR) {
+        closesocket(listen_socket);
+        WSACleanup();
+        vTaskDelete(NULL);
+        return;
+    }
+
+    if (listen(listen_socket, STATUS_SERVER_BACKLOG) == SOCKET_ERROR) {
+        closesocket(listen_socket);
+        WSACleanup();
+        vTaskDelete(NULL);
+        return;
+    }
 
     while (1) {
-        vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(5000));
-
-        xSemaphoreTake(console_mutex, portMAX_DELAY);
-
-        printf("\n");
-        printf(COLOR_CYAN "===========================================================\n" COLOR_RESET);
-        printf(COLOR_CYAN "|            MANUFACTURING SYSTEM STATUS                  |\n" COLOR_RESET);
-        printf(COLOR_CYAN "===========================================================\n" COLOR_RESET);
-
-        for (int i = 0; i < manufacturing_net.num_places; i++) {
-            int tokens = get_place_tokens(i);
-            printf(COLOR_CYAN "| " COLOR_RESET);
-            printf("%-30s: %2d tokens", manufacturing_net.places[i].name, tokens);
-            printf(COLOR_CYAN "        |\n" COLOR_RESET);
+        SOCKET client = accept(listen_socket, NULL, NULL);
+        if (client == INVALID_SOCKET) {
+            vTaskDelay(pdMS_TO_TICKS(1000));
+            continue;
         }
 
-        printf(COLOR_CYAN "===========================================================\n" COLOR_RESET);
-        printf("\n");
-        fflush(stdout);
+        // Always respond immediately with the latest state
+        char request[128];
+        recv(client, request, sizeof(request) - 1, 0);
 
-        xSemaphoreGive(console_mutex);
+        char payload[STATUS_JSON_BUFFER];
+        int payload_len = build_status_payload(payload, sizeof(payload));
+        if (payload_len < 0) {
+            payload_len = 0;
+            payload[0] = '\0';
+        }
+
+        char response[STATUS_RESPONSE_BUFFER];
+        int response_len = snprintf(response, sizeof(response),
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: application/json\r\n"
+            "Connection: close\r\n"
+            "Access-Control-Allow-Origin: *\r\n" // CORS header
+            "Content-Length: %d\r\n"
+            "\r\n"
+            "%s",
+            payload_len,
+            payload);
+
+        send(client, response, response_len, 0);
+        shutdown(client, SD_BOTH);
+        closesocket(client);
     }
+
+    closesocket(listen_socket);
+    WSACleanup();
+    vTaskDelete(NULL);
 }
 
 // ====================
@@ -769,10 +887,10 @@ void main_blinky(void) {
         return;
     }
 
-    result = xTaskCreate(task_monitor, "Monitor",
-        configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
+    result = xTaskCreate(task_status_server, "StatusServer",
+        configMINIMAL_STACK_SIZE * 3, NULL, 2, NULL);
     if (result != pdPASS) {
-        printf("ERROR: Failed to create Monitor task\n");
+        printf("ERROR: Failed to create StatusServer task\n");
         return;
     }
 

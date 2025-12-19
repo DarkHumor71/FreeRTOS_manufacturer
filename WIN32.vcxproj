@@ -65,7 +65,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Bscmake>
@@ -77,6 +77,9 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\Source\include;..\..\Source\portable\MSVC-MingW;..\Common\Include;..\..\..\FreeRTOS-Plus\Source\FreeRTOS-Plus-Trace\kernelports\FreeRTOS;..\..\..\FreeRTOS-Plus\Source\FreeRTOS-Plus-Trace\kernelports\FreeRTOS\include;..\..\..\FreeRTOS-Plus\Source\FreeRTOS-Plus-Trace\include;.\Trace_Recorder_Configuration;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+<Link>
+  <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+</Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\FreeRTOS-Plus\Source\FreeRTOS-Plus-Trace\kernelports\FreeRTOS\trcKernelPort.c" />
@@ -161,6 +164,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PIPE.pnml" />
+    <None Include="status-viewer\index.html" />
+    <None Include="status-viewer\styles.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

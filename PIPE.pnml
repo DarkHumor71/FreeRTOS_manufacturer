@@ -1,140 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
-    <net id="manufacturing_process_advanced" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <net id="manufacturing_process" type="http://www.pnml.org/version-2009/grammar/ptnet">
         <page id="main_page">
             <name>
-                <text>Advanced Manufacturing Process</text>
+                <text>Manufacturing Process (Matches main_blinky.c)</text>
             </name>
-
-            <!-- ==================== -->
-            <!-- PLACES (States)      -->
-            <!-- ==================== -->
-            <place id="P0">
-                <name><text>Raw Material</text></name>
-                <initialMarking><text>10</text></initialMarking>
-            </place>
-            <place id="P1">
-                <name><text>Ready to Process</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P2">
-                <name><text>Processing</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P3">
-                <name><text>Processed</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P4">
-                <name><text>Ready to Assemble</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P5">
-                <name><text>Assembled</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P6">
-                <name><text>Quality Check</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P7">
-                <name><text>Passed QC</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P8">
-                <name><text>Ready to Package</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <place id="P9">
-                <name><text>Packaged</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <!-- Parallel Painting/Coating -->
-            <place id="P10">
-                <name><text>Painted</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-            <!-- Resource constraint -->
-            <place id="P11">
-                <name><text>Worker</text></name>
-                <initialMarking><text>3</text></initialMarking>
-            </place>
-            <!-- Rework/Reject loop -->
-            <place id="P12">
-                <name><text>Rework Bin</text></name>
-                <initialMarking><text>0</text></initialMarking>
-            </place>
-
-            <!-- ==================== -->
-            <!-- TRANSITIONS (Events) -->
-            <!-- ==================== -->
+            <!-- PLACES -->
+            <place id="P0"><name><text>Raw Material</text></name><initialMarking><text>20</text></initialMarking></place>
+            <place id="P1"><name><text>Ready to Process</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P2"><name><text>Processing</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P3"><name><text>Processed</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P4"><name><text>Assembly in Progress</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P5"><name><text>Assembled</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P6"><name><text>QC Active 1</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P7"><name><text>QC1 Passed - Routing Buffer</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P8"><name><text>Ready for Individual Package</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P9"><name><text>Individually Packaged</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P10"><name><text>Final Packaged</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P11"><name><text>Painted</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P12"><name><text>QC Active 2</text></name><initialMarking><text>0</text></initialMarking></place>
+            <place id="P13"><name><text>Worker</text></name><initialMarking><text>1</text></initialMarking></place>
+            <place id="P14"><name><text>Rework Bin</text></name><initialMarking><text>0</text></initialMarking></place>
+            <!-- NEW PLACE: Painting in Progress -->
+            <place id="P15"><name><text>Painting in Progress</text></name><initialMarking><text>0</text></initialMarking></place>
+            <!-- TRANSITIONS -->
             <transition id="T0"><name><text>Load Material</text></name></transition>
             <transition id="T1"><name><text>Start Processing</text></name></transition>
             <transition id="T2"><name><text>Finish Processing</text></name></transition>
             <transition id="T3"><name><text>Start Assembly</text></name></transition>
             <transition id="T4"><name><text>Finish Assembly</text></name></transition>
-            <transition id="T5"><name><text>Start QC</text></name></transition>
-            <transition id="T6"><name><text>Pass QC</text></name></transition>
-            <transition id="T7"><name><text>Package Product</text></name></transition>
-            <transition id="T8"><name><text>Ship Product</text></name></transition>
-            <!-- Parallel branch -->
-            <transition id="T9"><name><text>Paint</text></name></transition>
-            <!-- Rework/Reject -->
-            <transition id="T10"><name><text>Fail QC</text></name></transition>
-            <transition id="T11"><name><text>Rework Process</text></name></transition>
-
-            <!-- ==================== -->
-            <!-- ARCS (Flow Relations) -->
-            <!-- ==================== -->
-            <!-- Standard linear flow with worker resource -->
+            <transition id="T5"><name><text>Start QC 1</text></name></transition>
+            <transition id="T6"><name><text>Pass QC 1</text></name></transition>
+            <transition id="T7"><name><text>Fail QC 1</text></name></transition>
+            <transition id="T8"><name><text>Start Painting</text></name></transition>
+            <transition id="T9"><name><text>Skip Paint</text></name></transition>
+            <transition id="T10"><name><text>Start QC 2</text></name></transition>
+            <transition id="T11"><name><text>Pass QC 2</text></name></transition>
+            <transition id="T12"><name><text>Fail QC 2</text></name></transition>
+            <transition id="T13"><name><text>Individual Package</text></name></transition>
+            <transition id="T14"><name><text>Bulk Package</text></name></transition>
+            <transition id="T15"><name><text>Rework Process</text></name></transition>
+            <!-- NEW TRANSITION: Finish Painting -->
+            <transition id="T16"><name><text>Finish Painting</text></name></transition>
+            <!-- ARCS -->
+            <!-- T0: Load Material -->
             <arc id="A0" source="P0" target="T0"><inscription><text>1</text></inscription></arc>
             <arc id="A1" source="T0" target="P1"><inscription><text>1</text></inscription></arc>
+            <!-- T1: Start Processing -->
             <arc id="A2" source="P1" target="T1"><inscription><text>1</text></inscription></arc>
-            <arc id="A3" source="P11" target="T1"><inscription><text>1</text></inscription></arc>
-            <arc id="A4" source="T1" target="P2"><inscription><text>1</text></inscription></arc>
-            <arc id="A5" source="T1" target="P11"><inscription><text>1</text></inscription></arc>
-            <arc id="A6" source="P2" target="T2"><inscription><text>1</text></inscription></arc>
-            <arc id="A7" source="P11" target="T2"><inscription><text>1</text></inscription></arc>
-            <arc id="A8" source="T2" target="P3"><inscription><text>1</text></inscription></arc>
-            <arc id="A9" source="T2" target="P11"><inscription><text>1</text></inscription></arc>
-            <!-- Parallel painting branch -->
-            <arc id="A10" source="P3" target="T9"><inscription><text>1</text></inscription></arc>
-            <arc id="A11" source="P11" target="T9"><inscription><text>1</text></inscription></arc>
-            <arc id="A12" source="T9" target="P10"><inscription><text>1</text></inscription></arc>
-            <arc id="A13" source="T9" target="P11"><inscription><text>1</text></inscription></arc>
-            <!-- Assembly path (can use painted or processed) -->
-            <arc id="A14" source="P3" target="T3"><inscription><text>2</text></inscription></arc>
-            <arc id="A15" source="P10" target="T3"><inscription><text>2</text></inscription></arc>
-            <arc id="A16" source="P11" target="T3"><inscription><text>1</text></inscription></arc>
-            <arc id="A17" source="T3" target="P4"><inscription><text>1</text></inscription></arc>
-            <arc id="A18" source="T3" target="P11"><inscription><text>1</text></inscription></arc>
-            <arc id="A19" source="P4" target="T4"><inscription><text>1</text></inscription></arc>
-            <arc id="A20" source="P11" target="T4"><inscription><text>1</text></inscription></arc>
-            <arc id="A21" source="T4" target="P5"><inscription><text>1</text></inscription></arc>
-            <arc id="A22" source="T4" target="P11"><inscription><text>1</text></inscription></arc>
-            <!-- Re-assembly (optional) -->
-            <arc id="A23" source="P5" target="T3"><inscription><text>2</text></inscription></arc>
-            <!-- QC with worker -->
-            <arc id="A24" source="P5" target="T5"><inscription><text>1</text></inscription></arc>
-            <arc id="A25" source="P11" target="T5"><inscription><text>1</text></inscription></arc>
-            <arc id="A26" source="T5" target="P6"><inscription><text>1</text></inscription></arc>
-            <arc id="A27" source="T5" target="P11"><inscription><text>1</text></inscription></arc>
-            <!-- Pass QC -->
-            <arc id="A28" source="P6" target="T6"><inscription><text>1</text></inscription></arc>
-            <arc id="A29" source="T6" target="P7"><inscription><text>1</text></inscription></arc>
-            <!-- Fail QC (rework loop) -->
-            <arc id="A30" source="P6" target="T10"><inscription><text>1</text></inscription></arc>
-            <arc id="A31" source="T10" target="P12"><inscription><text>1</text></inscription></arc>
-            <!-- Rework process: rework bin to ready to assemble -->
-            <arc id="A32" source="P12" target="T11"><inscription><text>1</text></inscription></arc>
-            <arc id="A33" source="P11" target="T11"><inscription><text>1</text></inscription></arc>
-            <arc id="A34" source="T11" target="P4"><inscription><text>1</text></inscription></arc>
-            <arc id="A35" source="T11" target="P11"><inscription><text>1</text></inscription></arc>
-            <!-- Packaging and shipping -->
-            <arc id="A36" source="P7" target="T7"><inscription><text>1</text></inscription></arc>
-            <arc id="A37" source="T7" target="P8"><inscription><text>1</text></inscription></arc>
-            <arc id="A38" source="P8" target="T8"><inscription><text>1</text></inscription></arc>
-            <arc id="A39" source="T8" target="P9"><inscription><text>1</text></inscription></arc>
+            <arc id="A3" source="T1" target="P2"><inscription><text>1</text></inscription></arc>
+            <!-- T2: Finish Processing -->
+            <arc id="A4" source="P2" target="T2"><inscription><text>1</text></inscription></arc>
+            <arc id="A5" source="T2" target="P3"><inscription><text>1</text></inscription></arc>
+            <!-- T3: Start Assembly (needs 2 processed) -->
+            <arc id="A6" source="P3" target="T3"><inscription><text>2</text></inscription></arc>
+            <arc id="A7" source="T3" target="P4"><inscription><text>1</text></inscription></arc>
+            <!-- T4: Finish Assembly -->
+            <arc id="A8" source="P4" target="T4"><inscription><text>1</text></inscription></arc>
+            <arc id="A9" source="T4" target="P5"><inscription><text>1</text></inscription></arc>
+            <!-- T5: Start QC 1 (needs assembled + worker) -->
+            <arc id="A10" source="P5" target="T5"><inscription><text>1</text></inscription></arc>
+            <arc id="A11" source="P13" target="T5"><inscription><text>1</text></inscription></arc>
+            <arc id="A12" source="T5" target="P6"><inscription><text>1</text></inscription></arc>
+            <!-- T6: Pass QC 1 -->
+            <arc id="A13" source="P6" target="T6"><inscription><text>1</text></inscription></arc>
+            <arc id="A14" source="T6" target="P7"><inscription><text>1</text></inscription></arc>
+            <arc id="A15" source="T6" target="P13"><inscription><text>1</text></inscription></arc>
+            <!-- T7: Fail QC 1 -->
+            <arc id="A16" source="P6" target="T7"><inscription><text>1</text></inscription></arc>
+            <arc id="A17" source="T7" target="P14"><inscription><text>1</text></inscription></arc>
+            <arc id="A18" source="T7" target="P13"><inscription><text>1</text></inscription></arc>
+            <!-- T8: Start Painting -->
+            <arc id="A19" source="P7" target="T8"><inscription><text>1</text></inscription></arc>
+            <arc id="A20" source="T8" target="P15"><inscription><text>1</text></inscription></arc>
+            <!-- T9: Skip Paint -->
+            <arc id="A21" source="P7" target="T9"><inscription><text>1</text></inscription></arc>
+            <arc id="A22" source="T9" target="P8"><inscription><text>1</text></inscription></arc>
+            <!-- T10: Start QC 2 (needs painted + worker) -->
+            <arc id="A23" source="P11" target="T10"><inscription><text>1</text></inscription></arc>
+            <arc id="A24" source="P13" target="T10"><inscription><text>1</text></inscription></arc>
+            <arc id="A25" source="T10" target="P12"><inscription><text>1</text></inscription></arc>
+            <!-- T11: Pass QC 2 -->
+            <arc id="A26" source="P12" target="T11"><inscription><text>1</text></inscription></arc>
+            <arc id="A27" source="T11" target="P8"><inscription><text>1</text></inscription></arc>
+            <arc id="A28" source="T11" target="P13"><inscription><text>1</text></inscription></arc>
+            <!-- T12: Fail QC 2 -->
+            <arc id="A29" source="P12" target="T12"><inscription><text>1</text></inscription></arc>
+            <arc id="A30" source="T12" target="P14"><inscription><text>1</text></inscription></arc>
+            <arc id="A31" source="T12" target="P13"><inscription><text>1</text></inscription></arc>
+            <!-- T13: Individual Package -->
+            <arc id="A32" source="P8" target="T13"><inscription><text>1</text></inscription></arc>
+            <arc id="A33" source="T13" target="P9"><inscription><text>1</text></inscription></arc>
+            <!-- T14: Bulk Package (needs 5 individually packaged) -->
+            <arc id="A34" source="P9" target="T14"><inscription><text>5</text></inscription></arc>
+            <arc id="A35" source="T14" target="P10"><inscription><text>1</text></inscription></arc>
+            <!-- T15: Rework Process -->
+            <arc id="A36" source="P14" target="T15"><inscription><text>1</text></inscription></arc>
+            <arc id="A37" source="T15" target="P3"><inscription><text>1</text></inscription></arc>
+            <!-- T16: Finish Painting -->
+            <arc id="A38" source="P15" target="T16"><inscription><text>1</text></inscription></arc>
+            <arc id="A39" source="T16" target="P11"><inscription><text>1</text></inscription></arc>
         </page>
     </net>
 </pnml>
