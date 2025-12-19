@@ -375,7 +375,7 @@ void setup_manufacturing_process(void) {
     add_place("Final Packaged", 0);                     // P10
     add_place("Painted", 0);                           // P11
     add_place("QC Active 2", 0);                       // P12
-    add_place("Worker", 1);                            // P13
+    add_place("Worker", 3);                            // P13
     add_place("Rework Bin", 0);                        // P14
 
     // Transitions (order must match enum indices)
