@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manufacturing Status Viewer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const STATUS_ENDPOINT = 'http://192.168.10.178:8080';
+
+        function StatusTable({ places }) {
+            if (!places.length) {
+                return <p className="status-note">Waiting for data from FreeRTOS...</p>;
+            }
+
+            return (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Place</th>
+                            <th>Tokens</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {places.map(place => (
+                            <tr key={place.name}>
+                                <td>{place.name}</td>
+                                <td>{place.tokens}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            );
+        }
+
+        function App() {
+            const [places, setPlaces] = useState([]);
+            const [error, setError] = useState(null);
+            const [lastUpdate, setLastUpdate] = useState(null);
+
+            useEffect(() => {
+                let isMounted = true;
+
+                const fetchStatus = () => {
+                    fetch(STATUS_ENDPOINT, { cache: 'no-store' })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (!isMounted) return;
+                            setPlaces(data.places || []);
+                            setLastUpdate(new Date().toLocaleTimeString());
+                            setError(null);
+                        })
+                        .catch(err => {
+                            if (!isMounted) return;
+                            setError(`Failed to load status: ${err.message}`);
+                        });
+                };
+
+                fetchStatus();
+                const interval = setInterval(fetchStatus, 1000);
+                return () => {
+                    isMounted = false;
+                    clearInterval(interval);
+                };
+            }, []);
+
+            return (
+                <div className="app-shell">
+                    <header>
+                        <h1>Manufacturing Status Viewer</h1>
+                        <p className="subtitle">Connected to FreeRTOS status server at <code>{STATUS_ENDPOINT}</code></p>
+                        {lastUpdate && <p className="subtitle">Last update: {lastUpdate}</p>}
+                    </header>
+                    {error && <div className="error">{error}</div>}
+                    <StatusTable places={places} />
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
