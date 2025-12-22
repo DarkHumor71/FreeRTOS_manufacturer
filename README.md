@@ -34,7 +34,7 @@ A real-time manufacturing process control system implemented using **FreeRTOS** 
 This demo models a realistic manufacturing production line using **Petri nets**, a mathematical framework for modeling distributed systems. The system demonstrates:
 
 - **Concurrent task execution** using FreeRTOS
-- **Resource constraints** (limited QC workers)
+- **Resource constraints** (limited QC workers shared across QC1, QC2, and rework operations)
 - **Decision logic** (random paint selection)
 - **Quality control** with pass/fail and rework loops
 - **Bulk packaging** (batching 5 individual units)
@@ -62,6 +62,7 @@ Raw Material → Processing → Assembly → QC1 → Paint/Skip → QC2 → Pack
 ✅ **Network Support** - Access status from any device on your network  
 ✅ **Rework Loop** - Failed QC items re-enter the processing pipeline  
 ✅ **Randomized Behavior** - Paint selection and QC pass/fail probabilities  
+✅ **Interactive Controls** - Keyboard input to increase raw materials during runtime  
 
 ---
 
@@ -133,7 +134,11 @@ The system uses a **Petri net** to model the manufacturing process:
      - **Green**: QC Pass, Bulk Package
      - **Red**: QC Fail
 
-3. **Example Console Output**
+3. **Interactive Controls**
+   - Press **`+`** key to increase raw materials by 10 units
+   - This allows you to add more materials to the production line as needed
+
+4. **Example Console Output**
    ```
    ===========================================================
    |   MANUFACTURING PROCESS CONTROL SYSTEM                    |
@@ -161,7 +166,7 @@ A lightweight web page provides real-time visualization of the Petri net state.
 
 The viewer is located in the `status-viewer/` directory.
 
-**Option 1: Using Node.js**
+**Option 1: Using Node.js (Recommended)**
 ```bash
 cd status-viewer
 npx serve
@@ -174,6 +179,11 @@ cd status-viewer
 python -m http.server 3000
 ```
 Then navigate to `http://localhost:3000`.
+
+**Troubleshooting:**
+- If you get 404 errors, try running the server from inside the `status-viewer` directory
+- You can also access the file directly: `http://localhost:PORT/index.html`
+- Make sure the FreeRTOS demo is running and serving on port 8080
 
 ### What You'll See
 
@@ -246,7 +256,7 @@ The table updates every second by polling `http://localhost:8080/` (the JSON sta
 | T12 | Fail QC 2 | P12 (1) | P14 (1), P13 (1) | Fail second QC |
 | T13 | Individual Package | P8 (1) | P9 (1) | Package single unit |
 | T14 | Bulk Package | P9 (5) | P10 (1) | Combine 5 units into bulk package |
-| T15 | Rework Process | P14 (1) | P3 (1) | Rework failed item back to processed state |
+| T15 | Rework Process | P14 (1), P13 (1) | P3 (1), P13 (1) | Rework failed item back to processed state (requires worker) |
 
 ### FreeRTOS Tasks
 

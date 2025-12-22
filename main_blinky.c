@@ -398,11 +398,11 @@ void setup_manufacturing_process(void) {
     // T3: Start Assembly
     add_transition("Start Assembly");
     add_arc_input(T_START_ASSEMBLY, P_PROCESSED, 2);
-    add_arc_output(T_START_ASSEMBLY, P_READY_TO_ASSEMBLE, 1);
+    add_arc_output(T_START_ASSEMBLY, P_READY_TO_ASSEMBLE, 2);
 
     // T4: Finish Assembly
     add_transition("Finish Assembly");
-    add_arc_input(T_FINISH_ASSEMBLY, P_READY_TO_ASSEMBLE, 1);
+    add_arc_input(T_FINISH_ASSEMBLY, P_READY_TO_ASSEMBLE, 2);
     add_arc_output(T_FINISH_ASSEMBLY, P_ASSEMBLED, 1);
 
     // T5: Start QC1
@@ -464,7 +464,9 @@ void setup_manufacturing_process(void) {
     // T15: Rework Process
     add_transition("Rework Process");
     add_arc_input(T_REWORK_PROCESS, P_REWORK_BIN, 1);
+    add_arc_input(T_REWORK_PROCESS, P_WORKER, 1);
     add_arc_output(T_REWORK_PROCESS, P_PROCESSED, 1);
+    add_arc_output(T_REWORK_PROCESS, P_WORKER, 1);
 }
 
 // ====================
@@ -903,5 +905,18 @@ void main_blinky(void) {
 }
 // Stub for vBlinkyKeyboardInterruptHandler to resolve linker error
 void vBlinkyKeyboardInterruptHandler(int xKeyPressed) {
-    // Not used in this demo
+    // Handle keyboard input to increase raw materials
+    if (xKeyPressed == '+') {
+        // Increase raw materials by 1
+        xSemaphoreTake(manufacturing_net.places[P_RAW_MATERIAL].mutex, portMAX_DELAY);
+        manufacturing_net.places[P_RAW_MATERIAL].tokens += 1;
+        xSemaphoreGive(manufacturing_net.places[P_RAW_MATERIAL].mutex);
+
+        // Mark status as dirty for update
+        atomic_store(&status_dirty, true);
+
+        // Print confirmation (thread-safe)
+        safe_printf(COLOR_YELLOW, "[Keyboard] Increased raw materials by 1 (total: %d)\n",
+            get_place_tokens(P_RAW_MATERIAL));
+    }
 }

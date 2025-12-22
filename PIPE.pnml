@@ -162,6 +162,18 @@
             </graphics>
         </place>
 
+        <place id="P13">
+            <name>
+                <text>Painting</text>
+            </name>
+            <initialMarking>
+                <text>0</text>
+            </initialMarking>
+            <graphics>
+                <position x="1200" y="325"/>
+            </graphics>
+        </place>
+
         <place id="P14">
             <name>
                 <text>Rework Bin</text>
@@ -527,13 +539,23 @@
             </inscription>
         </arc>
 
-        <!-- T15: Rework -->
+        <!-- T15: Rework Process -->
         <arc id="a34" source="P14" target="T15">
             <inscription>
                 <text>1</text>
             </inscription>
         </arc>
-        <arc id="a35" source="T15" target="P3">
+        <arc id="a35" source="P13" target="T15">
+            <inscription>
+                <text>1</text>
+            </inscription>
+        </arc>
+        <arc id="a36" source="T15" target="P3">
+            <inscription>
+                <text>1</text>
+            </inscription>
+        </arc>
+        <arc id="a37" source="T15" target="P13">
             <inscription>
                 <text>1</text>
             </inscription>
