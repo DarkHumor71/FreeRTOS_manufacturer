@@ -579,7 +579,7 @@ void task_painter_router(void* params) {
   * @brief FreeRTOS task: Performs quality control (both QC1 and QC2).
   */
 void task_quality_control(void* params) {
-    const TickType_t qc_duration = pdMS_TO_TICKS(1000);
+    const TickType_t qc_duration = pdMS_TO_TICKS(3000);
     const int fail_chance_percent = 5;
     TickType_t last_wake = xTaskGetTickCount();
     int qc_count = 0;
