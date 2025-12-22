@@ -166,6 +166,21 @@
     <ClCompile Include="..\Common\Minimal\TaskNotifyArray.c">
       <Filter>Demo App Source\Full_Demo\Common Demo Tasks</Filter>
     </ClCompile>
+    <ClCompile Include="petri_net.c">
+      <Filter>Demo App Source</Filter>
+    </ClCompile>
+    <ClCompile Include="manufacturing_process.c">
+      <Filter>Demo App Source</Filter>
+    </ClCompile>
+    <ClCompile Include="console_utils.c">
+      <Filter>Demo App Source</Filter>
+    </ClCompile>
+    <ClCompile Include="tasks.c">
+      <Filter>Demo App Source</Filter>
+    </ClCompile>
+    <ClCompile Include="status_server.c">
+      <Filter>Demo App Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FreeRTOSConfig.h">
@@ -228,9 +243,26 @@
     <ClInclude Include="..\..\..\FreeRTOS-Plus\Source\FreeRTOS-Plus-Trace\Include\trcKernelPort.h">
       <Filter>Configuration Files</Filter>
     </ClInclude>
+    <ClInclude Include="petri_net.h">
+      <Filter>Configuration Files</Filter>
+    </ClInclude>
+    <ClInclude Include="manufacturing_process.h">
+      <Filter>Configuration Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console_utils.h">
+      <Filter>Configuration Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tasks.h">
+      <Filter>Configuration Files</Filter>
+    </ClInclude>
+    <ClInclude Include="status_server.h">
+      <Filter>Configuration Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PIPE.pnml" />
+    <None Include="status-viewer\index.html" />
+    <None Include="status-viewer\styles.css" />
   </ItemGroup>
 </Project>

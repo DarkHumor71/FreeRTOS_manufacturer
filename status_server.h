@@ -1,0 +1,11 @@
+#ifndef STATUS_SERVER_H
+#define STATUS_SERVER_H
+
+#define STATUS_SERVER_PORT 8080
+#define STATUS_JSON_BUFFER 2048
+#define STATUS_RESPONSE_BUFFER (STATUS_JSON_BUFFER + 256)
+#define STATUS_SERVER_BACKLOG 5
+
+void task_status_server(void* params);
+
+#endif // STATUS_SERVER_H
